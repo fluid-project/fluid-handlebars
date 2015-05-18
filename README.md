@@ -1,4 +1,4 @@
-A helper library to assist in pulling in handlebars content both on the server and client side.  Provides two helper functions (see ["functions"](#Functions) below).
+A helper library to assist in pulling in handlebars content both on the server and client side.  Provides a handful of helper functions (see ["functions"](#Functions) below).
 
 # Server-side installation instructions
 
