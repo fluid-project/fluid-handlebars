@@ -9,6 +9,7 @@
     var gpii = fluid.registerNamespace("gpii");
     fluid.registerNamespace("gpii.templates.hb.client");
 
+    /** @namespace gpii.templates.hb */
     gpii.templates.hb.client.addHelper = function (that, component) {
         var key = component.options.helperName;
         if (component.getHelper) {
@@ -19,9 +20,9 @@
         }
     };
 
-    gpii.templates.hb.client.init = function(that) {
+    gpii.templates.hb.client.registerHelpers = function (that) {
         if (Handlebars) {
-            Object.keys(that.helpers).forEach(function(key){
+            Object.keys(that.helpers).forEach(function (key) {
                 Handlebars.registerHelper(key, that.helpers[key]);
             });
         }
@@ -30,63 +31,55 @@
         }
     };
 
-    gpii.templates.hb.client.render = function (that, key, context) {
-        // TODO:  Convert to "that-ism" where we use locate() instead of $(selector)
-        // If a template exists, load that.  Otherwise, try to load the partial.
-        var element = $("#partial-" + key).length ? $("#partial-" + key) : $("#template-" + key);
+    gpii.templates.hb.client.render = function (that, templateName, context) {
+        var templateType = that.templates.partials[templateName] ? "partials" : that.templates.pages[templateName] ? "pages" : that.templates.layouts[templateName] ? "layouts" : null;
+        if (!templateType) {
+            fluid.fail("Can't find template '" + templateName + "'...");
+        }
 
         // Cache each compiled template the first time we use it...
-        if (that.compiled[key]) {
-            return that.compiled[key](context);
-        }
-        else {
-            if (!element || !element.html()) {
-                fluid.fail("Template '" + key + "' does not have any content. Skipping");
-                return;
-            }
+        if (!that.compiled[templateType][templateName]) {
+            var compiledTemplate = Handlebars.compile(that.templates[templateType][templateName]);
 
-            var template = Handlebars.compile(element.html());
-            that.compiled[key] = template;
-            return template(context);
+            that.compiled[templateType][templateName] = compiledTemplate;
         }
+
+        return that.compiled[templateType][templateName](context);
     };
 
     gpii.templates.hb.client.passthrough = function (that, element, key, context, manipulator) {
-        // TODO: Confirm whether that.function syntax works here
         element[manipulator](gpii.templates.hb.client.render(that, key, context));
     };
 
     ["after", "append", "before", "prepend", "replaceWith", "html"].forEach(function (manipulator) {
-        // TODO: Confirm whether that.function syntax works here
         gpii.templates.hb.client[manipulator] = function (that, element, key, context) {
             gpii.templates.hb.client.passthrough(that, element, key, context, manipulator);
         };
     });
 
-    gpii.templates.hb.client.appendToBody = function (that, data) {
-        // TODO:  Replace this with a {that} reference?
-        $("body").append(data);
+    gpii.templates.hb.client.cacheTemplates = function (that, data) {
+        ["layout", "pages", "partials"].forEach(function (key) {
+            if (data.templates[key]) {
+                that.templates[key] = data.templates[key];
+            }
+        });
 
-        // TODO: Confirm whether that.function syntax works here
-        gpii.templates.hb.client.loadPartials();
+        gpii.templates.hb.client.loadPartials(that);
 
         // Fire a "templates loaded" event so that components can wait for their markup to appear.
-        that.events.templatesLoaded.fire();
+        that.events.onTemplatesLoaded.fire(that);
     };
 
-    gpii.templates.hb.client.loadPartials  = function () {
-        // load all partials so that we can use them in context
-        $("[id^=partial-]").each(function (index, element) {
-            var id = element.id;
-            var key = id.substring(id.indexOf("-") + 1);
-            Handlebars.registerPartial(key, $("#" + id).html());
+    gpii.templates.hb.client.loadPartials  = function (that) {
+        Object.keys(that.templates.partials).forEach(function (key) {
+            Handlebars.registerPartial(key, that.templates.partials[key]);
         });
     };
 
-    gpii.templates.hb.client.loadTemplates = function (that, callback) {
+    gpii.templates.hb.client.retrieveTemplates = function (that, callback) {
         var settings = {
             url:     that.options.templateUrl,
-            success: that.appendToBody
+            success: that.cacheTemplates
         };
         if (callback) {
             $.ajax(settings).then(callback);
@@ -110,8 +103,17 @@
             }
         },
         members: {
-            helpers:  {},
-            compiled: {}
+            helpers:   {},
+            templates: {
+                layouts:  {},
+                pages:    {},
+                partials: {}
+            },
+            compiled:  {
+                layouts:  {},
+                pages:    {},
+                partials: {}
+            }
         },
         distributeOptions: [
             {
@@ -132,8 +134,8 @@
                 funcName: "gpii.templates.hb.client.append",
                 args: ["{that}", "{arguments}.0", "{arguments}.1", "{arguments}.2", "{arguments}.3"]
             },
-            "appendToBody": {
-                funcName: "gpii.templates.hb.client.appendToBody",
+            "cacheTemplates": {
+                funcName: "gpii.templates.hb.client.cacheTemplates",
                 args: ["{that}", "{arguments}.0", "{arguments}.1", "{arguments}.2"]
             },
             "before": {
@@ -148,11 +150,8 @@
                 funcName: "gpii.templates.hb.client.html",
                 args: ["{that}", "{arguments}.0", "{arguments}.1", "{arguments}.2", "{arguments}.3"]
             },
-            "loadPartials": {
-                funcName: "gpii.templates.hb.client.loadPartials"
-            },
-            "loadTemplates": {
-                funcName: "gpii.templates.hb.client.loadTemplates",
+            "retrieveTemplates": {
+                funcName: "gpii.templates.hb.client.retrieveTemplates",
                 args: ["{that}", "{arguments}.0"]
             },
             "prepend": {
@@ -165,15 +164,18 @@
             }
         },
         events: {
-            "templatesLoaded": null
+            "onTemplatesLoaded": null
         },
         listeners: {
-            onCreate: [
+            "onCreate.registerHelpers": [
                 {
-                    funcName: "gpii.templates.hb.client.init",
+                    funcName: "gpii.templates.hb.client.registerHelpers",
                     args: ["{that}", "{arguments}.0"]
                 }
-            ]
+            ],
+            "onCreate.loadTemplates": {
+                func: "{that}.retrieveTemplates"
+            }
         }
     });
 })(jQuery);

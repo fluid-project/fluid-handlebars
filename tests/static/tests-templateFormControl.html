@@ -1,0 +1,104 @@
+<html>
+    <head>
+        <title>Unit Tests for "Template Aware" components</title>
+        <!-- Bring in jQuery and other dependencies -->
+        <script type="text/javascript" src="/modules/infusion/src/lib/jquery/core/js/jquery.js"></script>
+
+        <!-- Bring in fluid dependencies -->
+        <script type="text/javascript" src="/modules/infusion/src/framework/core/js/FluidDocument.js"></script>
+        <script type="text/javascript" src="/modules/infusion/src/framework/core/js/Fluid.js"></script>
+        <script type="text/javascript" src="/modules/infusion/src/framework/core/js/FluidDOMUtilities.js"></script>
+        <script type="text/javascript" src="/modules/infusion/src/framework/core/js/FluidIoC.js"></script>
+        <script type="text/javascript" src="/modules/infusion/src/framework/core/js/DataBinding.js"></script>
+        <script type="text/javascript" src="/modules/infusion/src/framework/core/js/FluidView.js"></script>
+        <script type="text/javascript" src="/modules/infusion/src/lib/fastXmlPull/js/fastXmlPull.js"></script>
+        <script type="text/javascript" src="/modules/infusion/src/framework/renderer/js/fluidParser.js"></script>
+        <script type="text/javascript" src="/modules/infusion/src/framework/renderer/js/fluidRenderer.js"></script>
+        <script type="text/javascript" src="/modules/infusion/src/framework/core/js/FluidRequests.js"></script>
+        <script type="text/javascript" src="/modules/infusion/src/framework/core/js/ModelTransformation.js"></script>
+        <script type="text/javascript" src="/modules/infusion/src/framework/core/js/ModelTransformationTransforms.js"></script>
+        
+        <!-- Bring in Handlebars dependency -->
+        <script type="text/javascript" src="/bc/handlebars/handlebars.js"></script>
+
+        <!-- Bring in Pagedown dependencies -->
+        <script type="text/javascript" src="/bc/pagedown/Markdown.Converter.js"></script>
+        <script type="text/javascript" src="/bc/pagedown/Markdown.Sanitizer.js"></script>
+
+        <!-- Bring in client library being tested -->
+        <script type="text/javascript" src="/src/js/client/handlebars.js"></script>
+        <script type="text/javascript" src="/src/js/client/binder.js"></script>
+        <script type="text/javascript" src="/src/js/client/templateAware.js"></script>
+        <script type="text/javascript" src="/src/js/client/multiTemplateAware.js"></script>
+        <script type="text/javascript" src="/src/js/client/templateMessage.js"></script>
+        <script type="text/javascript" src="/src/js/client/templateFormControl.js"></script>
+        <script type="text/javascript" src="/src/js/common/helper.js"></script>
+        <script type="text/javascript" src="/src/js/common/md-common.js"></script>
+        <script type="text/javascript" src="/src/js/client/md-client.js"></script>
+        <script type="text/javascript" src="/src/js/common/jsonify.js"></script>
+        <script type="text/javascript" src="/src/js/common/equals.js"></script>
+
+
+        <!-- Bring in our test helper -->
+        <script type="text/javascript" src="/content/js/tests-templateFormControl.js"></script>
+
+        <!-- Foundation styles -->
+        <link rel="stylesheet" href="/bc/foundation/css/foundation.css"/>
+    </head>
+    <body>
+        <div class="row">
+            <div class="column">
+                <h1>"Template Form Control" Component Tests</h1>
+
+                <p>This page needs to be served up by a server that can also deliver the required handlebars templates.  The tests should not complete in a standalone browser.</p>
+
+                <hr/>
+
+                <div class="readyForSuccess">This content should not be visible.</div>
+
+                <hr/>
+
+                <div class="readyForStringifySuccess">This content should not be visible.</div>
+
+                <hr/>
+
+                <div class="readyForStringSuccess">This content should not be visible.</div>
+
+                <hr/>
+
+                <div class="readyForFailure">This content should not be visible.</div>
+
+                <hr/>
+
+                <div class="readyForStringifyFailure">This content should not be visible.</div>
+
+                <hr/>
+
+                <div class="readyForStringFailure">This content should not be visible.</div>
+
+                <hr/>
+
+                <div class="readyForAmbiguity">This content should not be visible.</div>
+
+                <hr/>
+
+                <div class="readyForKeys">This content should not be visible.</div>
+
+                <div class="readyForNested">This content should not be visible.</div>
+
+                <script type="text/javascript">
+                    <!-- instantiate test component -->
+                    var success          = gpii.hb.tests.templateFormControl.readyForSuccess(".readyForSuccess");
+                    var successString    = gpii.hb.tests.templateFormControl.readyForStringSuccess(".readyForStringSuccess");
+                    var successStringify = gpii.hb.tests.templateFormControl.readyForStringifySuccess(".readyForStringifySuccess");
+                    var failure          = gpii.hb.tests.templateFormControl.readyForFailure(".readyForFailure");
+                    var stringifyFailure = gpii.hb.tests.templateFormControl.readyForStringifyFailure(".readyForStringifyFailure");
+                    var stringFailure    = gpii.hb.tests.templateFormControl.readyForStringFailure(".readyForStringFailure");
+                    var ambiguous        = gpii.hb.tests.templateFormControl.readyForAmbiguity(".readyForAmbiguity");
+                    var keyed            = gpii.hb.tests.templateFormControl.readyForKeys(".readyForKeys");
+                    var nested           = gpii.hb.tests.templateFormControl.readyForNested(".readyForNested");
+                </script>
+            </div>
+        </div>
+    </body>
+</html>

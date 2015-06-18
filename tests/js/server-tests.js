@@ -1,7 +1,10 @@
 // Test all server side modules (including basic template rendering)...
 "use strict";
 var fluid = fluid || require("infusion");
+fluid.setLogging(true);
+
 var gpii = fluid.registerNamespace("gpii");
+
 var path = require("path");
 
 var jqUnit  = fluid.require("jqUnit");
@@ -80,14 +83,11 @@ testServer.runTests = function () {
             testServer.isSaneResponse(jqUnit, error, response, body);
 
             if (body) {
-                var templateRegexp = /type="text\/x-handlebars-template">/gi;
-                var matches = body.match(templateRegexp);
-
-                jqUnit.assertNotNull("There should be templates found in the body.", matches);
-                if (matches) {
-                    // TODO:  This will need to be updated as we add templates.  If it comes up often, refactor.
-                    jqUnit.assertTrue("There should be at least three templates in the returned source.", matches.length > 3);
-                }
+                var data = typeof body === "string" ? JSON.parse(body) : body;
+                jqUnit.assertNotNull("There should be templates returned...", data.templates);
+                ["layouts", "pages", "partials"].forEach(function (key) {
+                    jqUnit.assertTrue("There should be at least some content for each template type...", Object.keys(data.templates[key]).length > 0);
+                });
             }
         });
     });
