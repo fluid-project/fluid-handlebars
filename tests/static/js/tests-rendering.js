@@ -1,8 +1,7 @@
 "use strict";
+// Test rendering functions independently of the `testAware` infrastructure.
+//
 // This is a test component that is meant to be included in a client-side document.
-//
-// To run these tests, you should look at zombie-tests.js, which will start the server and launch a headless browser.
-//
 /* global fluid, gpii, jqUnit */
 fluid.registerNamespace("gpii.hb.clientTests");
 
@@ -34,18 +33,11 @@ fluid.defaults("gpii.hb.clientTests", {
     },
     components: {
         templates: {
-            type: "gpii.templates.hb.client",
-            options: {
-                listeners: {
-                    "onCreate.loadTemplates": {
-                        func: "{templates}.loadTemplates"
-                    }
-                }
-            }
+            type: "gpii.templates.hb.client"
         }
     },
     listeners: {
-        "{templates}.events.templatesLoaded": {
+        "{templates}.events.onTemplatesLoaded": {
             funcName: "gpii.hb.clientTests.transformUsingTemplates",
             args:     ["{that}"]
         }

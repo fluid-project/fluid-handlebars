@@ -13,7 +13,8 @@ var path       = require("path");
 
 gpii.express.hb.dispatcher.getRouter = function (that) {
     return function (req, res) {
-        var templateName = req.params.template + ".handlebars";
+        var template = req.params.template ? req.params.template : that.options.defaultTemplate;
+        var templateName = template + ".handlebars";
 
         var viewDir          = that.options.config.express.views;
         var templateRelPath  = path.join("pages", templateName);
@@ -39,9 +40,16 @@ gpii.express.hb.dispatcher.getRouter = function (that) {
 
 fluid.defaults("gpii.express.hb.dispatcher", {
     gradeNames: ["gpii.express.router", "fluid.standardRelayComponent", "autoInit"],
-    method: "get",
-    path:   "/dispatcher/:template",
-    config: "{expressConfigHolder}.options.config",
+    method:          "get",
+    defaultTemplate: "index",
+    // In most cases you will want to supply both a path with a variable, and one without, as in:
+    //
+    // path:            ["/:template", "/"],
+    //
+    // This will ensure that the root content handling (which defaults to using `index.handlebars`) responds to the
+    // root of the path.
+    //
+    config:          "{expressConfigHolder}.options.config",
     invokers: {
         "getRouter": {
             funcName: "gpii.express.hb.dispatcher.getRouter",

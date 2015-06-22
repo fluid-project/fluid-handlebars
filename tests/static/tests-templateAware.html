@@ -1,6 +1,6 @@
 <html>
     <head>
-        <title>Unit Tests for Handlebars Module</title>
+        <title>Unit Tests for "Template Aware" components</title>
         <!-- Bring in jQuery and other dependencies -->
         <script type="text/javascript" src="/modules/infusion/src/lib/jquery/core/js/jquery.js"></script>
 
@@ -27,41 +27,48 @@
 
         <!-- Bring in client library being tested -->
         <script type="text/javascript" src="/src/js/client/handlebars.js"></script>
+        <script type="text/javascript" src="/src/js/client/binder.js"></script>
+        <script type="text/javascript" src="/src/js/client/templateAware.js"></script>
+        <script type="text/javascript" src="/src/js/client/multiTemplateAware.js"></script>
+        <script type="text/javascript" src="/src/js/client/templateMessage.js"></script>
+        <script type="text/javascript" src="/src/js/client/templateFormControl.js"></script>
         <script type="text/javascript" src="/src/js/common/helper.js"></script>
         <script type="text/javascript" src="/src/js/common/md-common.js"></script>
         <script type="text/javascript" src="/src/js/client/md-client.js"></script>
         <script type="text/javascript" src="/src/js/common/jsonify.js"></script>
         <script type="text/javascript" src="/src/js/common/equals.js"></script>
 
+
         <!-- Bring in our test helper -->
-        <script type="text/javascript" src="/tests/js/client-tests.js"></script>
+        <script type="text/javascript" src="/content/js/tests-templateAware.js"></script>
+
+        <!-- Foundation styles -->
+        <link rel="stylesheet" href="/bc/foundation/css/foundation.css"/>
     </head>
     <body>
-        <h1>Handlebars Helper Test Suite</h1>
+        <div class="row">
+            <div class="column">
+                <h1>"Template Aware" Component Tests</h1>
 
-        <p>This page needs to be served up by a server that can also deliver the required handlebars templates.  The tests should not complete in a standalone browser.</p>
+                <p>This page needs to be served up by a server that can also deliver the required handlebars templates.  The tests should not complete in a standalone browser.</p>
 
-        <hr/>
+                <hr/>
 
-        <!-- The markup we will be targeting -->
+                <div class="viewport">This content should not be visible.></div>
 
-        <!-- Must come first so that we can tell that content has been inserted before it... -->
-        <div class="viewport-before" style="display:none">original content</div>
+                <hr/>
 
-        <div class="viewport-append" style="display:none">original content</div>
-
-        <div class="viewport-html" style="display:none">original content</div>
-
-        <div class="viewport-prepend" style="display:none">original content</div>
-
-        <div class="viewport-replaceWith" style="display:none">original content</div>
-
-        <!-- Must come last so that we can tell that content has been inserted after it... -->
-        <div class="viewport-after"  style="display:none">original content</div>
+                <div class="contained">
+                    <p>This content should not be overwritten.</p>
+                    <div class="contained-inner">This content should not be visible.</div>
+                </div>
+            </div>
+        </div>
 
         <script type="text/javascript">
             <!-- instantiate test component -->
-            var tests = gpii.hb.clientTests("body");
+            var templateAware = gpii.hb.tests.templateAware(".viewport");
+            var contained = gpii.hb.tests.templateAware.contained(".contained");
         </script>
     </body>
 </html>

@@ -1,0 +1,163 @@
+<html>
+    <head>
+        <title>Unit Tests for Binder Module</title>
+        <!-- Bring in jQuery and other dependencies -->
+        <script type="text/javascript" src="../../node_modules/infusion/src/lib/jquery/core/js/jquery.js"></script>
+
+        <!-- Bring in fluid dependencies -->
+        <script type="text/javascript" src="../../node_modules/infusion/src/framework/core/js/FluidDocument.js"></script>
+        <script type="text/javascript" src="../../node_modules/infusion/src/framework/core/js/Fluid.js"></script>
+        <script type="text/javascript" src="../../node_modules/infusion/src/framework/core/js/FluidDOMUtilities.js"></script>
+        <script type="text/javascript" src="../../node_modules/infusion/src/framework/core/js/FluidIoC.js"></script>
+        <script type="text/javascript" src="../../node_modules/infusion/src/framework/core/js/DataBinding.js"></script>
+        <script type="text/javascript" src="../../node_modules/infusion/src/framework/core/js/FluidView.js"></script>
+        <script type="text/javascript" src="../../node_modules/infusion/src/lib/fastXmlPull/js/fastXmlPull.js"></script>
+        <script type="text/javascript" src="../../node_modules/infusion/src/framework/renderer/js/fluidParser.js"></script>
+        <script type="text/javascript" src="../../node_modules/infusion/src/framework/renderer/js/fluidRenderer.js"></script>
+        <script type="text/javascript" src="../../node_modules/infusion/src/framework/core/js/FluidRequests.js"></script>
+        <script type="text/javascript" src="../../node_modules/infusion/src/framework/core/js/ModelTransformation.js"></script>
+        <script type="text/javascript" src="../../node_modules/infusion/src/framework/core/js/ModelTransformationTransforms.js"></script>
+
+        <!-- Bring in client library being tested -->
+        <script type="text/javascript" src="../../src/js/client/binder.js"></script>
+
+        <!-- Bring in our test helper -->
+        <script type="text/javascript" src="../static/js/tests-binder.js"></script>
+
+        <!-- Foundation styles -->
+        <link rel="stylesheet" href="../../bower_components/foundation/css/foundation.css"/>
+    </head>
+    <body>
+        <div class="row">
+            <div class="column medium-12">
+                <h1>Binder Test Suite</h1>
+
+                <p>This page provides test components that can be opened using any browser as a file.</p>
+
+                <hr/>
+
+                <!-- markup for "long notation" tests -->
+                <h2>Long Notation</h2>
+                <div class="viewport-long">
+                    <form>
+                        <input type="text" name="init-from-model"/>
+                        <input type="text" name="init-from-markup" value="initialized from markup"/>
+                        <input type="text" name="update-from-model"/>
+                        <input type="text" name="update-from-markup"/>
+                    </form>
+                </div>
+
+                <!-- markup for "short notation" tests -->
+                <h2>Short Notation</h2>
+                <div class="viewport-short">
+                    <form>
+                        <input type="text" name="init-from-model"/>
+                        <input type="text" name="init-from-markup" value="initialized from markup"/>
+                        <input type="text" name="update-from-model"/>
+                        <input type="text" name="update-from-markup"/>
+                    </form>
+                </div>
+
+                <!-- markup for "array notation" tests -->
+                <h2>Array Notation</h2>
+                <div class="viewport-array">
+                    <form>
+                        <input type="text" name="init-from-model"/>
+                        <input type="text" name="init-from-markup" value="initialized from markup"/>
+                        <input type="text" name="update-from-model"/>
+                        <input type="text" name="update-from-markup"/>
+                    </form>
+                </div>
+
+                <!-- markup for "textarea" tests -->
+                <h2>Textarea Form Elements</h2>
+                <div class="viewport-textarea">
+                    <form>
+                        <textarea name="init-from-model"></textarea>
+                        <textarea name="init-from-markup">initialized from markup</textarea>
+                        <textarea name="update-from-model"></textarea>
+                        <textarea name="update-from-markup"></textarea>
+                    </form>
+                </div>
+
+                <hr/>
+
+                <p>All the previous examples interacted with text input fields.  The remaining tests exercise other types of form controls.</p>
+
+                <!-- markup for "select" form control tests -->
+                <h2>Select Form Elements</h2>
+                <div class="viewport-select">
+                    <form>
+                        <select name="init-from-model">
+                            <option value="default">default</option>
+                            <option value="initialized from model">initialized from model</option>
+                        </select>
+
+                        <select name="init-from-markup">
+                            <option value="default">default</option>
+                            <option value="initialized from markup" selected="true">initialized from markup</option>
+                        </select>
+
+                        <select name="update-from-model">
+                            <option value="">default</option>
+                            <option value="updated using applier">updated using applier</option>
+                        </select>
+
+                        <select name="update-from-markup">
+                            <option value="">default</option>
+                            <option value="updated using form controls">updated using form controls</option>
+                        </select>
+                    </form>
+                </div>
+
+                <!-- markup for "radio" form control tests -->
+                <h2>Radio Form Elements</h2>
+                <div class="viewport-radio">
+                    <form>
+                        <h3>Model Init</h3>
+                        <p>
+                            <input type="radio" id="init-from-model-markup" name="init-from-model" value="Set in markup."/>
+                            <label for="init-from-model-markup">markup</label>
+                            <input type="radio" id="init-from-model-model" name="init-from-model" value="initialized from model"/>
+                            <label for="init-from-model-model">model</label>
+                        </p>
+
+                        <h3>Markup Init</h3>
+                        <p>
+                            <input type="radio" id="init-from-markup-markup" name="init-from-markup" value="initialized from markup" checked="true"/>
+                            <label for="init-from-markup-markup">markup</label>
+                            <input type="radio" id="init-from-markup-applier" name="init-from-markup" value="initialized from model"/>
+                            <label for="init-from-markup-applier">applier</label>
+                        </p>
+
+                        <h3>Model Update</h3>
+                        <p>
+                            <input type="radio" id="update-from-model-markup" name="update-from-model" value="updated using form controls"/>
+                            <label for="update-from-model-markup">markup</label>
+                            <input type="radio" id="update-from-model-applier" name="update-from-model" value="updated using applier"/>
+                            <label for="update-from-model-applier">applier</label>
+                        </p>
+
+                        <h3>Markup Update</h3>
+                        <p>
+                            <input type="radio" id="update-from-markup-markup" name="update-from-markup" value="updated using form controls"/>
+                            <label for="update-from-markup-markup">markup</label>
+                            <input type="radio" id="update-from-markup-applier" name="update-from-markup" value="updated using applier"/>
+                            <label for="update-from-model-applier">applier</label>
+                        </p>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <script type="text/javascript">
+            <!-- instantiate test components -->
+            var long     = gpii.hb.tests.binder.long(".viewport-long");
+            var short    = gpii.hb.tests.binder.short(".viewport-short");
+            var array    = gpii.hb.tests.binder.array(".viewport-array");
+            var textarea = gpii.hb.tests.binder.long(".viewport-textarea");
+            var select   = gpii.hb.tests.binder.long(".viewport-select");
+            var radio    = gpii.hb.tests.binder.radio(".viewport-radio");
+        </script>
+    </body>
+</html>
