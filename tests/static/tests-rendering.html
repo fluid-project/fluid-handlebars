@@ -26,7 +26,8 @@
         <script type="text/javascript" src="/bc/pagedown/Markdown.Sanitizer.js"></script>
 
         <!-- Bring in client library being tested -->
-        <script type="text/javascript" src="/src/js/client/handlebars.js"></script>
+        <script type="text/javascript" src="/src/js/client/templateAware.js"></script>
+        <script type="text/javascript" src="/src/js/client/renderer.js"></script>
         <script type="text/javascript" src="/src/js/common/helper.js"></script>
         <script type="text/javascript" src="/src/js/common/md-common.js"></script>
         <script type="text/javascript" src="/src/js/client/md-client.js"></script>
@@ -34,7 +35,10 @@
         <script type="text/javascript" src="/src/js/common/equals.js"></script>
 
         <!-- Bring in our test helper -->
-        <script type="text/javascript" src="/tests/js/client-tests.js"></script>
+        <script type="text/javascript" src="/content/js/tests-rendering.js"></script>
+
+        <!-- Foundation styles -->
+        <link rel="stylesheet" href="/bc/foundation/css/foundation.css"/>
     </head>
     <body>
         <h1>Handlebars Helper Test Suite</h1>
@@ -61,7 +65,7 @@
 
         <script type="text/javascript">
             <!-- instantiate test component -->
-            var tests = gpii.hb.clientTests("body");
+            var tests = gpii.clientTests("body");
         </script>
     </body>
 </html>

@@ -2,7 +2,7 @@
 //
 // This is designed to be used by adding it to a `gpii.express` instance as a child component.
 //
-// Any "helper" functions should extend the `gpii.express.hb.helper` grade, and should be added as child components of an instance of this grade.
+// Any "helper" functions should extend the `gpii.express.helper` grade, and should be added as child components of an instance of this grade.
 "use strict";
 var fluid = fluid || require("infusion");
 var gpii  = fluid.registerNamespace("gpii");
@@ -11,7 +11,7 @@ fluid.registerNamespace("gpii.express.hb");
 var exphbs = require("express-handlebars");
 require("handlebars");
 
-gpii.express.hb.addHelper = function (that, component) {
+gpii.express.addHelper = function (that, component) {
     var key = component.options.helperName;
     if (component.getHelper) {
         that.helpers[key] = component.getHelper();
@@ -21,7 +21,7 @@ gpii.express.hb.addHelper = function (that, component) {
     }
 };
 
-gpii.express.hb.configureExpress = function (that, express) {
+gpii.express.configureExpress = function (that, express) {
     if (that.options.config.express.views) {
         var viewRoot = that.options.config.express.views;
         var handlebarsConfig = {
@@ -54,26 +54,29 @@ fluid.defaults("gpii.express.hb", {
     distributeOptions: [
         {
             record: {
-                "funcName": "gpii.express.hb.addHelper",
-                "args": ["{gpii.express.hb}", "{gpii.templates.hb.helper}"]
+                "funcName": "gpii.express.addHelper",
+                "args": ["{gpii.express.hb}", "{gpii.templates.helper}"]
             },
-            target: "{that > gpii.templates.hb.helper}.options.listeners.onCreate"
+            target: "{that > gpii.templates.helper}.options.listeners.onCreate"
         }
     ],
     components: {
         md: {
-            type: "gpii.templates.hb.helper.md.server"
+            type: "gpii.templates.helper.md.server"
         },
         equals: {
-            type: "gpii.templates.hb.helper.equals"
+            type: "gpii.templates.helper.equals"
         },
         jsonify: {
-            type: "gpii.templates.hb.helper.jsonify"
+            type: "gpii.templates.helper.jsonify"
+        },
+        initBlock: {
+            type: "gpii.templates.helper.initBlock"
         }
     },
     listeners: {
         "{gpii.express}.events.onStarted": {
-            funcName: "gpii.express.hb.configureExpress",
+            funcName: "gpii.express.configureExpress",
             args:     ["{that}", "{arguments}.0"]
         }
     }
