@@ -6,12 +6,14 @@
 fluid.registerNamespace("gpii.clientTests");
 
 gpii.clientTests.transformUsingTemplates = function (that) {
-    that.renderer.after(that.locate("viewport-after"), that.options.templateName, that.model);
-    that.renderer.append(that.locate("viewport-append"), that.options.templateName, that.model);
-    that.renderer.before(that.locate("viewport-before"), that.options.templateName, that.model);
-    that.renderer.html(that.locate("viewport-html"), that.options.templateName, that.model);
-    that.renderer.prepend(that.locate("viewport-prepend"), that.options.templateName, that.model);
-    that.renderer.replaceWith(that.locate("viewport-replaceWith"), that.options.replaceWithTemplateName, that.model);
+
+    var renderer = that.getRenderer();
+    renderer.after(that.locate("viewport-after"), that.options.templateName, that.model);
+    renderer.append(that.locate("viewport-append"), that.options.templateName, that.model);
+    renderer.before(that.locate("viewport-before"), that.options.templateName, that.model);
+    renderer.html(that.locate("viewport-html"), that.options.templateName, that.model);
+    renderer.prepend(that.locate("viewport-prepend"), that.options.templateName, that.model);
+    renderer.replaceWith(that.locate("viewport-replaceWith"), that.options.replaceWithTemplateName, that.model);
 };
 
 fluid.defaults("gpii.clientTests", {

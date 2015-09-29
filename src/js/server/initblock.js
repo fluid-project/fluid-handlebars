@@ -128,7 +128,8 @@ fluid.defaults("gpii.templates.helper.initBlock", {
                     components: {
                         pageComponent: {
                             container:  "body",
-                            options:    {}
+                            options:    {
+                            }
                         }
                     }
                 }

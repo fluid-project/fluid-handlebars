@@ -5,11 +5,17 @@
 //
 /* global fluid */
 
+fluid.registerNamespace("gpii.templates.tests.templateMessage");
+
+gpii.templates.tests.templateMessage.getLocalRenderer = function (that) {
+    return that.localRenderer;
+};
+
 fluid.defaults("gpii.templates.tests.templateMessage", {
     gradeNames: ["gpii.templates.templateMessage", "gpii.templates.templateAware.bornReady"],
     template:   "common-success",
     components: {
-        renderer: {
+        localRenderer: {
             type: "gpii.templates.renderer",
             options: {
                 members: {
@@ -20,6 +26,12 @@ fluid.defaults("gpii.templates.tests.templateMessage", {
                     }
                 }
             }
+        }
+    },
+    invokers: {
+        getRenderer: {
+            funcName: "gpii.templates.tests.templateMessage.getLocalRenderer",
+            args:     ["{gpii.templates.tests.templateMessage}"]
         }
     }
 });

@@ -28,13 +28,14 @@
 /* global fluid, jQuery */
 (function () {
     "use strict";
-    var gpii = fluid.registerNamespace("gpii");
+    var gpii  = fluid.registerNamespace("gpii");
     fluid.registerNamespace("gpii.templates.templateAware");
 
     // A convenience function that can be used to more easily define `renderInitialMarkup` invokers (see example above).
-    gpii.templates.templateAware.renderMarkup = function (that, renderer, selector, template, data, manipulator) {
+    gpii.templates.templateAware.renderMarkup = function (that, selector, template, data, manipulator) {
         manipulator = manipulator ? manipulator : "html";
         var element = that.locate(selector);
+        var renderer = that.getRenderer();
         if (renderer) {
             renderer[manipulator](element, template, data);
             that.events.onMarkupRendered.fire(that);
@@ -42,11 +43,6 @@
         else {
             fluid.fail("I cannot render content without a renderer.");
         }
-    };
-
-    // When overriding this, you should fire an `onMarkupRendered` event to ensure that bindings can be applied.
-    gpii.templates.templateAware.noRenderFunctionDefined = function () {
-        fluid.fail("You are expected to define a renderInitialMarkup invoker when implementing a templateAware component.");
     };
 
     gpii.templates.templateAware.refreshDom = function (that) {
@@ -58,7 +54,7 @@
     };
 
     fluid.defaults("gpii.templates.templateAware", {
-        gradeNames: ["fluid.viewComponent", "gpii.hasRequiredOptions"],
+        gradeNames: ["gpii.hasRequiredOptions", "fluid.viewComponent"],
         requiredOptions: {
             templates:           true,
             "templates.initial": true,
@@ -84,14 +80,22 @@
             }
         },
         invokers: {
-            // TODO: Use `fluid.notImplemented` once it's available: https://issues.fluidproject.org/browse/FLUID-5733
-            // TODO: Review with Antranig, for whatever reason I cannot override this successfully in child grades.
+            // TODO:  Review why this claims not to be overriden.
             //renderInitialMarkup: {
-            //    funcName: "gpii.templates.templateAware.noRenderFunctionDefined"
+            //    funcName: "fluid.notImplemented"
             //},
             renderMarkup: {
                 funcName: "gpii.templates.templateAware.renderMarkup",
-                args:     ["{that}", "{renderer}", "{arguments}.0", "{arguments}.1", "{arguments}.2", "{arguments}.3"]
+                args:     ["{that}", "{arguments}.0", "{arguments}.1", "{arguments}.2", "{arguments}.3"]
+            },
+            getRenderer: {
+                funcName: "fluid.notImplemented"
+            }
+        },
+        components: {
+            rendererComponent: {
+                type:     "gpii.templates.renderer",
+                priority: "first"
             }
         }
     });
@@ -105,10 +109,16 @@
         }
     });
 
+    fluid.registerNamespace("gpii.templates.templateAware.serverAware");
+
+    gpii.templates.templateAware.serverAware.getRenderer = function (that) {
+        return that.rendererComponent;
+    };
+
     fluid.defaults("gpii.templates.templateAware.serverAware", {
         gradeNames: ["gpii.templates.templateAware"],
         components: {
-            renderer: {
+            rendererComponent: {
                 type: "gpii.templates.renderer.serverAware",
                 options: {
                     listeners: {
@@ -117,6 +127,12 @@
                         }
                     }
                 }
+            }
+        },
+        invokers: {
+            getRenderer: {
+                funcName: "gpii.templates.templateAware.serverAware.getRenderer",
+                args:    ["{gpii.templates.templateAware.serverAware}"]
             }
         }
     });

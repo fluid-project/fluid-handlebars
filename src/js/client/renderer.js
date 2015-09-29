@@ -94,6 +94,13 @@
                 partials: {}
             }
         },
+        events: {
+            "onTemplatesLoaded": {
+                events: {
+                    "onCreate": "onCreate"
+                }
+            }
+        },
         distributeOptions: [
             {
                 record: {
@@ -168,6 +175,9 @@
     fluid.defaults("gpii.templates.renderer.serverAware", {
         gradeNames: ["gpii.templates.renderer"],
         templateUrl: "/hbs",
+        events: {
+            onTemplatesLoaded: null
+        },
         invokers: {
             "cacheTemplates": {
                 funcName: "gpii.templates.renderer.serverAware.cacheTemplates",
@@ -177,9 +187,6 @@
                 funcName: "gpii.templates.renderer.serverAware.retrieveTemplates",
                 args: ["{that}", "{arguments}.0"]
             }
-        },
-        events: {
-            "onTemplatesLoaded": null
         },
         listeners: {
             "onCreate.loadTemplates": {

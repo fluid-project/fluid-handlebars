@@ -88,7 +88,7 @@
                 //
                 //   https://issues.fluidproject.org/browse/FLUID-4739
                 //
-                var value = change[path] ? change[path] : change;
+                var value = change && change[path] ? change[path] : change;
                 fluid.value(element, value);
             });
 

@@ -25,7 +25,7 @@
         components: {
             success: {
                 type:          "gpii.templates.templateMessage",
-                createOnEvent: "{renderer}.events.onRequestReceived",
+                createOnEvent: "{rendererComponent}.events.onRequestReceived",
                 container:     "{templateRequestAndRender}.dom.success",
                 options: {
                     template: "{templateRequestAndRender}.options.templates.success",
@@ -36,7 +36,7 @@
             },
             error: {
                 type:          "gpii.templates.templateMessage",
-                createOnEvent: "{renderer}.events.onRequestReceived",
+                createOnEvent: "{rendererComponent}.events.onRequestReceived",
                 container:     "{templateRequestAndRender}.dom.error",
                 options: {
                     template: "{templateRequestAndRender}.options.templates.error",

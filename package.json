@@ -15,8 +15,8 @@
     "grunt-contrib-jshint": "~0.9.0",
     "grunt-jsonlint": "1.0.4",
     "grunt-gpii": "git://github.com/GPII/grunt-gpii.git#58ae055833f437a9e91baedb9f39a22c5fdd727f",
-    "handlebars": "2.0.0",
-    "infusion": "git://github.com/fluid-project/infusion.git#282f1a318718eed0b0ec060fb8b4ad254417fd7e",
+    "handlebars": "4.0.3",
+    "infusion": "git://github.com/fluid-project/infusion.git#a1e3d601478e57276d4143fca5bcbe00f9c6b0cd",
     "marked": "0.3.2",
     "pagedown": "1.1.0",
     "underscore-node": "0.1.2",
@@ -24,7 +24,7 @@
   },
   "devDependencies": {
     "gpii-express": "git://github.com/the-t-in-rtf/gpii-express.git#4750af51a1fbe886a260d89097e58c1c624ab4f7",
-    "jqUnit": "git://github.com/fluid-project/node-jqUnit.git#b7ef53aac1ca365bf23d35d255fae874faa88b70",
+    "jqUnit": "git://github.com/fluid-project/node-jqUnit.git#d46bb932fa4069770852c51a92182939958f2d75",
     "request": "2.51.0",
     "tough-cookie": "0.12.1",
     "zombie": "3.0.15"

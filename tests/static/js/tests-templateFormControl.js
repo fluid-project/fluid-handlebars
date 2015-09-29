@@ -12,6 +12,10 @@ fluid.defaults("gpii.tests.templateFormControl", {
         success: "common-success",
         error:   "common-error"
     },
+    distributeOptions: {
+        source: "{that}.options.invokers.getRenderer",
+        target: "{that templateAware}.options.invokers.getRenderer"
+    },
     rules: {
         successResponseToModel: {
             successMessage: { literalValue: "The response was successful..." }
