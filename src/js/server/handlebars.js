@@ -4,11 +4,14 @@
 //
 // Any "helper" functions should extend the `gpii.express.helper` grade, and should be added as child components of an instance of this grade.
 "use strict";
-var fluid = fluid || require("infusion");
+var fluid = require("infusion");
 var gpii  = fluid.registerNamespace("gpii");
 fluid.registerNamespace("gpii.express.hb");
 
 var exphbs = require("express-handlebars");
+var path   = require("path");
+var fs     = require("fs");
+
 require("handlebars");
 
 gpii.express.addHelper = function (that, component) {
@@ -23,16 +26,33 @@ gpii.express.addHelper = function (that, component) {
 
 gpii.express.configureExpress = function (that, express) {
     if (that.options.config.express.views) {
-        var viewRoot = that.options.config.express.views;
+        var viewDirs     = fluid.makeArray(that.options.config.express.views);
+        var layoutDir    = null;
+        var partialsDirs = [];
+        fluid.each(viewDirs, function (viewDir) {
+            // We can only use the first layouts directory until this issue is resolved in express-handlebars:
+            //
+            // https://github.com/ericf/express-handlebars/issues/112
+            if (!layoutDir) {
+                var layoutPath = path.resolve(viewDir, "layouts");
+                if (fs.existsSync(layoutPath)) {
+                    layoutDir = layoutPath;
+                }
+            }
+
+            // We add entries in reverse order to preserve the same inheritance we see with pages.
+            partialsDirs.unshift(viewDir + "/partials/");
+        });
+
         var handlebarsConfig = {
             defaultLayout: "main",
-            layoutsDir:    viewRoot + "/layouts/",
-            partialsDir:   viewRoot + "/partials/"
+            layoutsDir:    layoutDir,
+            partialsDir:   partialsDirs
         };
 
         handlebarsConfig.helpers = that.helpers;
 
-        express.set("views", viewRoot);
+        express.set("views", that.options.config.express.views);
 
         var hbs = exphbs.create(handlebarsConfig);
         express.engine("handlebars", hbs.engine);

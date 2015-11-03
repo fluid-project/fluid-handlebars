@@ -15,7 +15,11 @@ require("./lib/test-router-error");
 // Test content (HTML, JS, templates)
 var testDir    = path.resolve(__dirname, "..");
 var contentDir = path.join(testDir, "static");
-var viewDir    = path.join(testDir, "views");
+
+var views = [
+    path.join(testDir, "templates/primary"),
+    path.join(testDir, "templates/secondary")
+];
 
 // Dependencies
 var bcDir      = path.resolve(__dirname, "../../bower_components");
@@ -39,14 +43,14 @@ gpii.templates.tests.client.harness.waitAndResolve = function (that, timeout) {
 };
 
 fluid.defaults("gpii.templates.tests.client.harness", {
-    gradeNames: ["gpii.express"],
+    gradeNames:  ["gpii.express"],
     expressPort: 6994,
-    baseUrl: "http://localhost:6994/",
+    baseUrl:     "http://localhost:6994/",
     config:  {
         express: {
-            "port" :   "{that}.options.expressPort",
+            port:    "{that}.options.expressPort",
             baseUrl: "{that}.options.baseUrl",
-            views:   viewDir
+            views:   views
         }
     },
     members: {

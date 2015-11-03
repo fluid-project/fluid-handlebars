@@ -6,7 +6,7 @@
   "repository": "https://github.com/GPII/gpii-handlebars",
   "scripts": {
     "test": "node tests/all-tests.js",
-    "postinstall": "grunt dedupe-infusion"
+    "postinstall": "grunt dedupe-infusion && bower install"
   },
   "dependencies": {
     "express-handlebars": "1.1.0",

@@ -13,9 +13,22 @@ var request = require("request");
 require("gpii-express");
 require("../../");
 
-var viewDir = path.resolve(__dirname, "../views");
+var viewDirs = [
+    path.resolve(__dirname, "../templates/primary"),
+    path.resolve(__dirname, "../templates/secondary")
+];
 
 fluid.registerNamespace("gpii.templates.tests.server");
+gpii.templates.tests.server.bodyMatches = function (message, body, pattern, shouldNotMatch) {
+    var matches = body.match(pattern);
+    if (shouldNotMatch) {
+        jqUnit.assertNull(message, matches);
+    }
+    else {
+        jqUnit.assertNotNull(message, matches);
+    }
+};
+
 gpii.templates.tests.server.isSaneResponse = function (jqUnit, error, response, body) {
     jqUnit.assertNull("There should be no errors.", error);
 
@@ -64,20 +77,14 @@ gpii.templates.tests.server.runTests = function (that) {
 
                 gpii.templates.tests.server.isSaneResponse(jqUnit, error, response, body);
 
-                jqUnit.assertNotNull("There should be layout content in the body...",         body.match(/from the layout/));
-                jqUnit.assertNotNull("There should be page content in the body...",           body.match(/from the page/));
-                jqUnit.assertNotNull("There should be partial content in the body...",        body.match(/from the partial/));
+                gpii.templates.tests.server.bodyMatches("There should be layout content in the body...", body, /from the layout/);
+                gpii.templates.tests.server.bodyMatches("There should be page content in the body...", body, /from the page/);
+                gpii.templates.tests.server.bodyMatches("There should be partial content in the body...", body, /from the partial/);
+                gpii.templates.tests.server.bodyMatches("The results should contain transformed markdown.", body, /<p><em>this works<\/em><\/p>/i);
+                gpii.templates.tests.server.bodyMatches("There should be model variable content in the body...", body, /modelvariable/);
+                gpii.templates.tests.server.bodyMatches("There should be query variable content in the body...", body, /queryvariable/);
 
-                var mdRegexp = /<p><em>this works<\/em><\/p>/i;
-                jqUnit.assertNotNull("The results should contain transformed markdown.",      body.match(mdRegexp));
-
-                jqUnit.assertNotNull("There should be model variable content in the body...", body.match(/modelvariable/));
-                jqUnit.assertNotNull("There should be query variable content in the body...", body.match(/queryvariable/));
-
-                // Tests for the "equals" helper
-
-                // TODO:  If I end up using this pattern any more often, make it into a function
-                // TODO:  Also, check with Antranig about jQuery like find, etc. functionality in fluid itself.
+                // Tests for the "equals" helper.  We don't use the standard function because we want to inspect the individual results more closely.
                 var equalsElementRegexp = /<td class="equal">([^<]+)<\/td>/;
                 var equalMatches = body.match(equalsElementRegexp);
                 jqUnit.assertNotNull("There should be 'equal' content.", equalMatches);
@@ -94,7 +101,7 @@ gpii.templates.tests.server.runTests = function (that) {
                     jqUnit.assertEquals("All 'unequal' comparisons should end up displaying 'false'.", "false", unequalElementText);
                 }
 
-                // Tests for the "jsonify" (JSON.stringify) helper
+                // Tests for the "jsonify" (JSON.stringify) helper.  We don't use the standard function because we want to inspect the results more closely.
                 var jsonifyElementRegexp = /<td class="jsonify">([^<]+)<\/td>/;
                 var matches = body.match(jsonifyElementRegexp);
                 jqUnit.assertNotNull("There should be jsonify content.", matches);
@@ -116,6 +123,27 @@ gpii.templates.tests.server.runTests = function (that) {
             jqUnit.assertEquals("The status code should be 404...", 404, response.statusCode);
         });
     });
+
+    jqUnit.asyncTest("Test multiple view directories with dispatcher...", function () {
+        request.get(that.options.config.express.baseUrl + "dispatcher/secondary", function (error, response, body) {
+            jqUnit.start();
+
+            gpii.templates.tests.server.bodyMatches("The default layout should have been used...", body, /Main Layout/);
+            gpii.templates.tests.server.bodyMatches("The secondary page should have been used...", body, /page served up from the secondary template directory/);
+            gpii.templates.tests.server.bodyMatches("The secondary partial should have been used...", body, /partial served from the secondary template director/);
+        });
+    });
+
+    jqUnit.asyncTest("Test overriding of content when using multiple view directories with dispatcher...", function () {
+        request.get(that.options.config.express.baseUrl + "dispatcher/overridden", function (error, response, body) {
+            jqUnit.start();
+
+            gpii.templates.tests.server.bodyMatches("The layout should have come from the primary...", body, /layout found in the primary template directory/);
+            gpii.templates.tests.server.bodyMatches("The page should have come from the primary", body, /page served up from the primary template directory/);
+            gpii.templates.tests.server.bodyMatches("The partial should have come from the primary...", body, /partial served from the primary template directory/);
+        });
+    });
+
 };
 
 var when = require("when");
@@ -126,7 +154,7 @@ module.exports = when.promise(function (resolve) {
             "express": {
                 "port" :   6904,
                 "baseUrl": "http://localhost:6904/",
-                "views":   viewDir,
+                "views":   viewDirs,
                 "session": {
                     "secret": "Printer, printer take a hint-ter."
                 }
