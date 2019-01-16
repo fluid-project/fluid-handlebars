@@ -26,9 +26,9 @@
     fluid.defaults("gpii.handlebars.renderer", {
         gradeNames: ["gpii.handlebars.renderer.common"],
         components: {
-            "md": {
-                "type": "gpii.handlebars.helper.md.client"
-            }
+            // "md": {
+                // "type": "gpii.handlebars.helper.md.client"
+            // }
         },
         invokers: {
             "after": {

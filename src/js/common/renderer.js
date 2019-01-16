@@ -11,7 +11,7 @@ var Handlebars = Handlebars || {};
 (function (fluid, Handlebars) {
     "use strict";
     if (typeof require !== "undefined") {
-        fluid = require("infusion");
+        // fluid = require("infusion");
         Handlebars = require("handlebars");
     }
 
