@@ -6,8 +6,50 @@
 /* eslint-env node */
 "use strict";
 var fluid = require("infusion");
+var gpii  = fluid.registerNamespace("gpii");
+
+var path = require("path");
+
+require("gpii-express");
+gpii.express.loadTestingSupport();
 
 require("../../test-harness");
+require("./helpers");
+
+fluid.registerNamespace("gpii.test.handlebars.browser.caseHolder");
+
+gpii.test.handlebars.browser.caseHolder.saveCoverageData = function (that, coverageData) {
+    var filename = "coverage-webdriver-" + Date.now() + "-" + that.id + ".json";
+
+    var realBasePath = path.resolve(fluid.module.resolvePath("%gpii-handlebars"), "..");
+    var crudelyResolvedPath = fluid.stringTemplate(that.options.coverageDir, { "gpii-handlebars": realBasePath });
+
+    gpii.test.handlebars.browser.saveCoverageData(crudelyResolvedPath, filename, coverageData);
+};
+
+/*
+
+    A caseholder to take care of optionally collecting coverage data at the end of each run.
+
+ */
+fluid.defaults("gpii.test.handlebars.browser.caseHolder.base", {
+    gradeNames: ["gpii.test.webdriver.caseHolder.base"],
+    coverageDir: "%gpii-handlebars/coverage",
+    sequenceStart: gpii.test.express.standardSequenceStart,
+    sequenceEnd: [
+        {
+            func: "{gpii.test.handlebars.browser.environment}.webdriver.executeScript",
+            args: [gpii.test.handlebars.browser.getCoverageData]
+        },
+        {
+            event:    "{gpii.test.handlebars.browser.environment}.webdriver.events.onExecuteScriptComplete",
+            listener: "gpii.test.handlebars.browser.caseHolder.saveCoverageData",
+            args:     ["{that}", "{arguments}.0"]
+        },
+        { func: "{gpii.test.handlebars.browser.environment}.events.stopFixtures.fire", args: [] },
+        { listener: "fluid.identity", event: "{testEnvironment}.events.onFixturesStopped"}
+    ]
+});
 
 /*
 
@@ -30,7 +72,7 @@ require("../../test-harness");
 
  */
 fluid.defaults("gpii.test.handlebars.browser.caseHolder", {
-    gradeNames: ["gpii.test.webdriver.caseHolder"],
+    gradeNames: ["gpii.test.handlebars.browser.caseHolder.base"],
     matchDefs: {
         standard: {
             markdown: {

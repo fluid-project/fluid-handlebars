@@ -8,6 +8,11 @@ fluid.registerNamespace("gpii.test.handlebars.browser");
 
 var jqUnit = require("node-jqunit");
 
+var fs   = require("fs");
+var path = require("path");
+
+require("../../../../");
+
 /* globals $ */
 
 gpii.test.handlebars.browser.equalThingsAreTrue = function (path, fnName) {
@@ -36,6 +41,15 @@ gpii.test.handlebars.browser.unequalThingsAreFalse = function (path, fnName) {
 
 gpii.test.handlebars.browser.getJSONContent = function (path) {
     return JSON.parse($(path).html());
+};
+
+gpii.test.handlebars.browser.getCoverageData = function () {
+    return JSON.stringify(window.__coverage__ || {}, null, 2);
+};
+
+gpii.test.handlebars.browser.saveCoverageData = function (coveragePath, filename, data) {
+    var outputPath = path.resolve(coveragePath, filename);
+    fs.writeFileSync(outputPath, data);
 };
 
 /**

@@ -10,7 +10,6 @@ require("./errorRenderingMiddleware-tests");
 require("./first-matching-path-tests");
 require("./i18n-unit-tests");
 require("./inline-tests");
-// TODO: These don't work!
 require("./inlineMessageBundlingMiddleware-tests");
 require("./live-reload-tests");
 require("./resolver-tests");

@@ -4,3 +4,4 @@ coverage
 reports
 .vagrant
 package-lock.json
+instrumented

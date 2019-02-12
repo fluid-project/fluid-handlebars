@@ -179,7 +179,7 @@ jqUnit.asyncTest("Large writes should be complete before we are notified of a fi
         jqUnit.assertEquals("The path should be correct...", templatePath, path);
         var fileContent = fs.readFileSync(templatePath, "utf8");
         jqUnit.assertEquals("The file's contents should be correct...", templateContent, fileContent);
-        fs.unlink(templatePath);
+        fs.unlinkSync(templatePath);
         watcherComponent.destroy();
     });
 

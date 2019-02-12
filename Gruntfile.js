@@ -4,7 +4,7 @@ module.exports = function (grunt) {
     grunt.initConfig({
         lintAll: {
             sources: {
-                md: [ "./*.md","./**/*.md", "!./node_modules/**" ],
+                md: [ "./*.md","./docs/*.md"],
                 js: ["./src/**/*.js", "./tests/**/*.js", "./*.js"],
                 json: ["./src/**/*.json", "./tests/**/*.json", "./*.json"],
                 json5: ["./tests/**/*.json5"],

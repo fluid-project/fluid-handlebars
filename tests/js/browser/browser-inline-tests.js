@@ -50,7 +50,7 @@ gpii.tests.handlebars.browser.inline.hasSecondaryPartial = function () {
 };
 
 fluid.defaults("gpii.tests.handlebars.browser.inline.caseHolder", {
-    gradeNames: ["gpii.test.webdriver.caseHolder"],
+    gradeNames: ["gpii.test.handlebars.browser.caseHolder.base"],
     rawModules: [{
         name: "Test the `inline` middleware...",
         tests: [{

@@ -10,7 +10,7 @@ require("./includes.js");
 fluid.registerNamespace("gpii.tests.handlebars.client.templateFormControl");
 
 fluid.defaults("gpii.tests.handlebars.browser.templateFormControl.caseHolder", {
-    gradeNames: ["gpii.test.webdriver.caseHolder"],
+    gradeNames: ["gpii.test.handlebars.browser.caseHolder.base"],
     rawModules: [{
         name: "Testing the `templateFormControl` client-side grade...",
         tests: [

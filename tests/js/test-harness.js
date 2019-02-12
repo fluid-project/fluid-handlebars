@@ -5,8 +5,9 @@
 "use strict";
 var fluid = require("infusion");
 
-fluid.require("%gpii-express");
-fluid.require("%gpii-handlebars");
+require("gpii-express");
+
+require("../../");
 
 require("./lib/test-router-error");
 

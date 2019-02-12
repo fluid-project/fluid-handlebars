@@ -14,7 +14,7 @@ gpii.tests.handlebars.browser.renderer.standalone.render = function (templateKey
 };
 
 fluid.defaults("gpii.tests.handlebars.browser.renderer.standalone.caseHolder", {
-    gradeNames: ["gpii.test.webdriver.caseHolder"],
+    gradeNames: ["gpii.test.handlebars.browser.caseHolder.base"],
     rawModules: [{
         name: "Testing standalone renderer component...",
         tests: [

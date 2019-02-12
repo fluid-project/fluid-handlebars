@@ -15,7 +15,7 @@ gpii.tests.handlebars.browser.initBlock.selectorContains = function (selector, s
 };
 
 fluid.defaults("gpii.tests.handlebars.browser.initBlock.caseHolder", {
-    gradeNames: ["gpii.test.webdriver.caseHolder"],
+    gradeNames: ["gpii.test.handlebars.browser.caseHolder.base"],
     rawModules: [{
         name: "Testing `initBlock` helper...",
         tests: [

@@ -8,6 +8,6 @@ var gpii = fluid.registerNamespace("gpii");
 fluid.require("%gpii-webdriver");
 gpii.webdriver.loadTestingSupport();
 
-fluid.require("%gpii-handlebars");
+require("../../../");
 require("./lib/fixtures");
 require("./lib/helpers");
