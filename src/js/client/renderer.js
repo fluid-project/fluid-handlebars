@@ -92,7 +92,7 @@
     // instead of serverMessageAware, even though in my codebase I only serverMessageAware. Some other
     // dependency must be beating me to creating the renderer. Temporarily making serverAware have all
     // serverMessageAware
-    fluid.defaults("gpii.handlebars.renderer.serverAware1", {
+    fluid.defaults("gpii.handlebars.renderer.serverAware", {
         gradeNames: ["gpii.handlebars.renderer"],
         templateUrl: "/hbs",
         invokers: {
@@ -102,7 +102,13 @@
             }
         },
         events: {
-            "onTemplatesLoaded": null
+            "onTemplatesLoaded": null,
+            "onAllResourcesLoaded": {
+                events: {
+                    // onMessagesLoaded: "onMessagesLoaded",
+                    onTemplatesLoaded: "onTemplatesLoaded"
+                }
+            }
         },
         listeners: {
             "onCreate.loadTemplates": {
@@ -132,8 +138,8 @@
         that.events.onMessagesLoaded.fire(that);
     };
 
-    fluid.defaults("gpii.handlebars.renderer.serverAware", { //serverMessageAware", {
-        gradeNames: ["gpii.handlebars.renderer.serverAware1", "fluid.modelComponent"],
+    fluid.defaults("gpii.handlebars.renderer.serverMessageAware", {
+        gradeNames: ["gpii.handlebars.renderer.serverAware", "fluid.modelComponent"],
         messageUrl: "/messages",
         invokers: {
             "cacheMessages": {

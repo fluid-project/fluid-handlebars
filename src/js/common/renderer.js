@@ -121,7 +121,8 @@ var Handlebars = Handlebars || {};
         defaultLocale: "en_us",
         defaultLayout: "main",
         events: {
-            onTemplatesLoaded: null
+            onTemplatesLoaded: null,
+            onAllResourcesLoaded: null
         },
         model: {
             messages:  {},

@@ -14,12 +14,12 @@
         gradeNames: ["fluid.component"],
         components: {
             renderer: {
-                type: "gpii.handlebars.renderer.serverAware"
+                type: "gpii.handlebars.renderer.serverMessageAware"
             },
             // All components that require a renderer should be added as children of the `requireRenderer` component
             // to ensure that they are created once the renderer is available.
             requireRenderer: {
-                createOnEvent: "{renderer}.events.onTemplatesLoaded",
+                createOnEvent: "{renderer}.events.onAllResourcesLoaded",
                 type: "fluid.component"
             }
         },

@@ -130,7 +130,7 @@
                 type: "gpii.handlebars.renderer.serverAware",
                 options: {
                     listeners: {
-                        "onTemplatesLoaded.renderMarkup": {
+                        "onAllResourcesLoaded.renderMarkup": {
                             func: "{gpii.handlebars.templateAware.serverAware}.renderInitialMarkup"
                         }
                     }
