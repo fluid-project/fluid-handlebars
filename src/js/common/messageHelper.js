@@ -18,7 +18,14 @@ gpii.handlebars.helper.messageHelper.getHelper = function (that, serverAware) {
             fluid.fail("You must call the 'messageHelper' helper with at least a message key.");
         }
         else {
-            var messages = fluid.get(serverAware, "model.messages");
+            if (serverAware) {
+                var messages = fluid.get(serverAware, "model.messages");
+            }
+            else {
+                // Currently, the server verion of the renderer is still storing the messages in it's
+                // options area, so if no serverAware is wired in, we'll assume this is running in node.js
+                var messages = fluid.get(rootContext || dataOrRootContext, "data.root.messages");
+            }
             // If we have a third argument, then the second argument is our "data".  Otherwise, we use the root context (equivalent to passing "." as the variable).
             var data = rootContext ? dataOrRootContext : fluid.get(dataOrRootContext, "data.root");
             var resolver = fluid.messageResolver({ messageBase: messages });
