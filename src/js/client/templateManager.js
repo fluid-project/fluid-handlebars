@@ -14,6 +14,8 @@
         gradeNames: ["fluid.component"],
         components: {
             renderer: {
+                // TODO sgithens This needs to be updated depending on the app from serverAware to
+                // serverMessageAware dynamically.
                 type: "gpii.handlebars.renderer.serverMessageAware"
             },
             // All components that require a renderer should be added as children of the `requireRenderer` component

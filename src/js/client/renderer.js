@@ -88,10 +88,6 @@
     // A "server aware" grade that depends on being able to communicate with an instance of
     // `gpii.handlebars.inlineTemplateBundlingMiddleware`.
 
-    // SGITHENS: Temporary work around while debugging. For some reason, serverAware is being created
-    // instead of serverMessageAware, even though in my codebase I only serverMessageAware. Some other
-    // dependency must be beating me to creating the renderer. Temporarily making serverAware have all
-    // serverMessageAware
     fluid.defaults("gpii.handlebars.renderer.serverAware", {
         gradeNames: ["gpii.handlebars.renderer"],
         templateUrl: "/hbs",
