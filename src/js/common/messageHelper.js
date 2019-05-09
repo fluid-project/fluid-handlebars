@@ -31,8 +31,6 @@ gpii.handlebars.helper.messageHelper.getHelper = function (that, serverAware) {
             var resolver = fluid.messageResolver({ messageBase: messages });
             // return resolver.resolve(messageKey, {});
             var togo = resolver.resolve(messageKey, {});
-            console.log("RESOLVEIT: ",  messageKey, dataOrRootContext, rootContext);
-            console.log(togo);
             return togo;
         }
     };
