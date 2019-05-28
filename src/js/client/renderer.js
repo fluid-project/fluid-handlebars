@@ -87,6 +87,7 @@
 
     // A "server aware" grade that depends on being able to communicate with an instance of
     // `gpii.handlebars.inlineTemplateBundlingMiddleware`.
+
     fluid.defaults("gpii.handlebars.renderer.serverAware", {
         gradeNames: ["gpii.handlebars.renderer"],
         templateUrl: "/hbs",
@@ -97,7 +98,13 @@
             }
         },
         events: {
-            "onTemplatesLoaded": null
+            "onTemplatesLoaded": null,
+            "onAllResourcesLoaded": {
+                events: {
+                    // onMessagesLoaded: "onMessagesLoaded",
+                    onTemplatesLoaded: "onTemplatesLoaded"
+                }
+            }
         },
         listeners: {
             "onCreate.loadTemplates": {
@@ -128,7 +135,7 @@
     };
 
     fluid.defaults("gpii.handlebars.renderer.serverMessageAware", {
-        gradeNames: ["gpii.handlebars.renderer.serverAware"],
+        gradeNames: ["gpii.handlebars.renderer.serverAware", "fluid.modelComponent"],
         messageUrl: "/messages",
         invokers: {
             "cacheMessages": {
