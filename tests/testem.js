@@ -35,7 +35,7 @@ var testemComponent = fluid.testem.instrumentation({
     testemOptions: {
         // "Headless Chrome" throws GPU errors at the moment, so just use Chrome.
         // "Firefox" is now redundant as there is a headless option.
-        skip: "PhantomJS,Safari,IE,Firefox,Headless Chrome"
+        skip: "PhantomJS,Safari,IE,Firefox,Headless Chrome,Chromium"
     },
     components: {
         express: {
