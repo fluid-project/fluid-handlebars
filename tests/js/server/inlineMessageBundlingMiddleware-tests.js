@@ -11,6 +11,8 @@ var jqUnit = require("node-jqunit");
 
 var request = require("request");
 
+require("./lib/fixtures");
+
 fluid.registerNamespace("fluid.tests.handlebars.inlineMessageBundlingMiddleware");
 
 fluid.tests.handlebars.inlineMessageBundlingMiddleware.verifyLanguageBundle = function (response, returnedBundle, expected) {
@@ -19,9 +21,8 @@ fluid.tests.handlebars.inlineMessageBundlingMiddleware.verifyLanguageBundle = fu
 };
 
 fluid.defaults("fluid.tests.handlebars.inlineMessageBundlingMiddleware.request.noHeaders", {
-    gradeNames: ["kettle.test.request.http"],
-    port:       "{testEnvironment}.options.port",
-    path:       "/messages"
+    gradeNames: ["fluid.test.handlebars.request"],
+    endpoint: "messages"
 });
 
 fluid.defaults("fluid.tests.handlebars.inlineMessageBundlingMiddleware.request", {
@@ -407,7 +408,7 @@ fluid.defaults("fluid.tests.handlebars.inlineMessageBundlingMiddleware.caseHolde
         queryLocaleRequest: {
             type: "fluid.tests.handlebars.inlineMessageBundlingMiddleware.request",
             options: {
-                path: "/messages?locale=en-GB"
+                endpoint: "messages?locale=en-GB"
             }
         },
         weightedLocaleRequest: {
@@ -415,7 +416,6 @@ fluid.defaults("fluid.tests.handlebars.inlineMessageBundlingMiddleware.caseHolde
             options: {
                 acceptLanguageHeaders: "fr-CH, fr;q=0.9, en;q=0.8, de;q=0.7, *;q=0.5"
             }
-
         },
         wildcardLocaleRequest: {
             type: "fluid.tests.handlebars.inlineMessageBundlingMiddleware.request",

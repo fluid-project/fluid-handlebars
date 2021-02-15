@@ -15,7 +15,7 @@
     "dependencies": {
         "chokidar": "3.5.0",
         "fluid-binder": "1.1.2",
-        "fluid-express": "1.0.17",
+        "fluid-express": "1.0.18-dev.20210121T091003Z.bfaa948.GH-49",
         "handlebars": "4.7.6",
         "infusion": "3.0.0-dev.20210114T211758Z.d345ecd74.FLUID-6145",
         "json5": "2.1.3",
@@ -30,7 +30,7 @@
         "fluid-lint-all": "1.0.0",
         "fluid-testem": "2.1.14",
         "graceful-fs": "4.2.4",
-        "kettle": "1.12.0",
+        "kettle": "2.1.0",
         "mkdirp": "1.0.4",
         "node-jqunit": "1.1.8",
         "nyc": "15.0.1",

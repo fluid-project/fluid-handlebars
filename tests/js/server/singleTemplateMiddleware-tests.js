@@ -15,6 +15,8 @@ fluid.express.loadTestingSupport();
 var kettle = require("kettle");
 kettle.loadTestingSupport();
 
+require("./lib/fixtures");
+
 fluid.registerNamespace("fluid.tests.handlebars.singleTemplateMiddleware");
 
 // Verify the results of a request.  Accepts the following values:
@@ -55,9 +57,7 @@ fluid.tests.handlebars.singleTemplateMiddleware.verifyResults = function (respon
 };
 
 fluid.defaults("fluid.tests.handlebars.singleTemplateMiddleware.request", {
-    gradeNames: ["kettle.test.request.http"],
-    port:       "{testEnvironment}.options.port",
-    path:       "{testEnvironment}.options.baseUrl"
+    gradeNames: ["fluid.test.handlebars.request"]
 });
 
 fluid.defaults("fluid.tests.handlebars.singleTemplateMiddleware.caseHolder", {
@@ -104,12 +104,7 @@ fluid.defaults("fluid.tests.handlebars.singleTemplateMiddleware.caseHolder", {
         dataRequest: {
             type: "fluid.tests.handlebars.singleTemplateMiddleware.request",
             options: {
-                path: {
-                    expander: {
-                        funcName: "fluid.stringTemplate",
-                        args:     ["%baseUrl?myvar=query+data", { baseUrl: "{testEnvironment}.options.baseUrl"}]
-                    }
-                }
+                endpoint: "?myvar=query+data"
             }
         }
     }

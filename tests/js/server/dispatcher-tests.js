@@ -66,7 +66,7 @@ fluid.tests.handlebars.server.dispatcher.checkOverridenBody = function (body) {
 fluid.defaults("fluid.tests.handlebars.dispatcher.request", {
     gradeNames: ["kettle.test.request.http"],
     port: "{testEnvironment}.options.port",
-    path: {
+    url: {
         expander: {
             funcName: "fluid.stringTemplate",
             args: ["%baseUrl%endpoint", { baseUrl: "{testEnvironment}.options.baseUrl", endpoint: "{that}.options.endpoint"}]

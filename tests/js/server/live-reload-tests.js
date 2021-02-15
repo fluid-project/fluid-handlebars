@@ -42,7 +42,7 @@ fluid.tests.handlebars.live.verifyResults = function (body, expectedText, invert
 fluid.defaults("fluid.tests.handlebars.live.request", {
     gradeNames: ["kettle.test.request.http"],
     port:       "{testEnvironment}.options.port",
-    path:       "{testEnvironment}.options.baseUrl"
+    url:        "{testEnvironment}.options.baseUrl"
 });
 
 /**
